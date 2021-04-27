@@ -11,6 +11,9 @@ USER_EMAIL="$4"
 DESTINATION_REPOSITORY_USERNAME="$5"
 TARGET_BRANCH="$6"
 COMMIT_MESSAGE="$7"
+MAIN_FILE="$8"
+
+
 
 if [ -z "$DESTINATION_REPOSITORY_USERNAME" ]
 then
@@ -57,6 +60,13 @@ ORIGIN_COMMIT="https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA"
 COMMIT_MESSAGE="${COMMIT_MESSAGE/ORIGIN_COMMIT/$ORIGIN_COMMIT}"
 COMMIT_MESSAGE="${COMMIT_MESSAGE/\$GITHUB_REF/$GITHUB_REF}"
 
+echo "Tags:"
+git tag
+
+echo "Version:"
+VERSION=$(echo "$(grep -m1 "Version:" $MAIN_FILE)" | sed "s/Version: //")
+echo "$VERSION"
+
 echo "git add:"
 git add .
 
@@ -67,6 +77,9 @@ echo "git diff-index:"
 # git diff-index : to avoid doing the git commit failing if there are no changes to be commit
 git diff-index --quiet HEAD || git commit --message "$COMMIT_MESSAGE"
 
+
+
+
 echo "git push origin:"
 # --set-upstream: sets de branch when pushing to a branch that does not exist
-git push origin --set-upstream "$TARGET_BRANCH"
+git push origin --set-upstream --tags "$TARGET_BRANCH"
