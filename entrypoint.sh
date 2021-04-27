@@ -63,7 +63,7 @@ COMMIT_MESSAGE="${COMMIT_MESSAGE/\$GITHUB_REF/$GITHUB_REF}"
 echo "Tags:"
 git tag
 
-echo "Version:"
+echo "Current version:"
 VERSION=$(echo "$(grep -m1 "Version:" $MAIN_FILE)" | sed "s/Version: //")
 echo "$VERSION"
 
@@ -77,9 +77,9 @@ echo "git diff-index:"
 # git diff-index : to avoid doing the git commit failing if there are no changes to be commit
 git diff-index --quiet HEAD || git commit --message "$COMMIT_MESSAGE"
 
-
-
-
 echo "git push origin:"
 # --set-upstream: sets de branch when pushing to a branch that does not exist
-git push origin --set-upstream --tags "$TARGET_BRANCH"
+git push origin --set-upstream "$TARGET_BRANCH"
+
+git tag -f "v$VERSION"
+git push -f origin --tags
