@@ -31,6 +31,9 @@ The Username/Organization for the destination repository, if different from `des
 ### `target-branch` (argument) [optional]
 The branch name for the destination repository. It defaults to `main` for historical reasons, feel free to change it to `main`.
 
+### `main-file` (argument) [optional]
+The file that contains the information about the version. It defaults to `index.php` (e.g. for WP plugins, use `style.css` for WP themes).
+       
 ### `commit-message` (argument) [optional]
 The commit message to be used in the output repository. Optional and defaults to "Update from $REPOSITORY_URL@commit".
 
